@@ -38,13 +38,19 @@ To protect capital from catastrophic drawdowns during aggressive structural tren
 ## Project Structure
 
 ```text
-├── research_paper/
-│   └── mean_revert_paper.ipynb  Colab.pdf  # Detailed mathematical documentation
-├── src/
-│   ├── ou_model.py          # OrnsteinUhlenbeck SDE & MCMC estimation
-│   ├── hmm_filter.py        # Hidden Markov Model regime classification
-│   ├── execution.py         # EV calculation, position sizing & path simulation
-│   └── backtest.py          # Backtesting engine & performance analytics
+├── .gitignore
+├── HMM_main.py                  # Hidden Markov Model regime classification
+├── LICENSE
+├── README.md
+├── data_feed.py                 # Market data ingestion stream
+├── helperfucatoins.py           # Utility and helper functions
+├── ko_hmm_final_pipeline2.pkl   # Serialized HMM pipeline model
+├── main.py                      # Main execution entry point
+├── mean_revert_paper.ipynb - Colab.pdf  # Detailed mathematical documentation
+├── postion_record.py            # Position recording and management
+├── requirements.txt             # Python dependencies
+├── singnal_engine.py            # Signal generation and trade filtering engine
+└── z_distro.py                  # Z-score and distribution calculations
 
 
 For an indepth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the complete research paper included in the repository: research_paper/mean_revert_paper.ipynb  Colab.pdf
