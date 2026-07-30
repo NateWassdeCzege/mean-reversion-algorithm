@@ -1,4 +1,4 @@
-content = """# Quantitative Mean Reversion Trading Algorithm
+# Quantitative Mean Reversion Trading Algorithm
 
 A production-grade, mathematically rigorous statistical arbitrage trading system grounded in stochastic calculus. This project bridges theoretical stochastic differential equations with applied quantitative finance, featuring strict risk management protocols and dynamic regime filtering.
 
