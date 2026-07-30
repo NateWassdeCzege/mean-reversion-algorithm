@@ -59,7 +59,7 @@ To protect capital from catastrophic drawdowns during aggressive structural tren
 ├── requirements.txt             # Python dependencies
 ├── signal_engine.py             # Signal generation and trade filtering engine
 └── z_distro.py                  # Z-score and distribution calculations
-
+"""
 
 
 
