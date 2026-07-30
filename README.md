@@ -12,10 +12,10 @@ Unlike static trading bots, this system continuously evaluates parameter uncerta
 
 The system operates on a dualtrack integration architecture that processes hourly OHLCV data to make statistically grounded execution decisions[cite: 1]:
 
-### 1. Stochastic Modeling: The OrnsteinUhlenbeck (OU) Process
-To capture meanreverting equity behavior, asset price dynamics are modeled via the stochastic differential equation (SDE)[cite: 1]:
-$$dx_{t}=\theta(\mux_{t})dt+\sigma dW_{t}$$
-* Deterministic drift ($\theta(\mux_{t})dt$) pulls the price back toward the longterm equilibrium mean ($\mu$) at a reversion speed ($\theta$)[cite: 1].
+### 1. Stochastic Modeling: The Ornstein-Uhlenbeck (OU) Process
+To capture mean-reverting equity behavior, asset price dynamics are modeled via the stochastic differential equation (SDE)[cite: 1]:
+$$dx_{t}=\theta(\mu-x_{t})dt+\sigma dW_{t}$$
+* Deterministic drift ($\theta(\mu-x_{t})dt$) pulls the price back toward the long-term equilibrium mean ($\mu$) at a reversion speed ($\theta$)[cite: 1].
 * Stochastic diffusion ($\sigma dW_{t}$) captures market volatility ($\sigma$) and unpredictable random noise via a Wiener process ($dW_{t}$)[cite: 1].
 
 ### 2. Parameter Estimation via MCMC
@@ -51,7 +51,7 @@ To protect capital from catastrophic drawdowns during aggressive structural tren
 ├── requirements.txt             # Python dependencies
 ├── singnal_engine.py            # Signal generation and trade filtering engine
 └── z_distro.py                  # Z-score and distribution calculations
-
-
+'''
+## Academic Paper
 For an indepth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the complete research paper included in the repository: research_paper/mean_revert_paper.ipynb  Colab.pdf
 └── README.md
