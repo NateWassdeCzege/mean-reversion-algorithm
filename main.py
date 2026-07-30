@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 import importlib
-
+import joblib
 # 1. Custom Imports
 from z_distro import parms_distribution, summary_statistics
 from singnal_engine import buy_signal, sell_singnal, calculate_expected_destination
@@ -13,7 +13,7 @@ from postion_record import PairPositionRecord, PairsPortfolioManager
 data_feed_module = importlib.import_module('data_feed')
 if not hasattr(data_feed_module, 'real_time_streamer'):
     raise ImportError('data_feed.py does not define real_time_streamer; check data_feed.py')
-real_time_streamer = data_feed_module.real_time_streamer
+real_time_streamer = data_feed_module.real_time_streamer2
 
 # 3. Initialize Portfolio & Variables
 portfolio = PairsPortfolioManager(initial_cash=100000.0)
@@ -33,16 +33,39 @@ df_KO.index = df_KO.index.tz_localize(None)
 # THE CRITICAL FIX: Rename the 'Open' column to 'KO_Open'
 df_KO.rename(columns={'Open': 'KO_Open'}, inplace=True)
 
+#load HMM
+print("Loading HMM pipeline...")
+hmm_pipeline = joblib.load('HMM/ko_hmm_final_pipeline2.pkl')
+hmm_model = hmm_pipeline['model']
+scaler = hmm_pipeline['scaler']
+
 # 5. Initialize the stream
 # Ensure we are passing 'lookback_periods' to match the updated data_feed.py
 print("Starting live simulation stream...")
 streamer_feed = real_time_streamer(df_KO, lookback_periods=130)
 
 # 6. Main Simulation Loop
-for current_time, historical_price, current_tick in streamer_feed:
+for current_date, historical_price, current_tick,live_features_df in streamer_feed:
+    print(f"\n--- Processing Live Trading Day: {current_date.strftime('%Y-%m-%d')} ---")
+
+# 1. Drop the NaN rows caused by indicator warm-up periods
+    valid_features_df = live_features_df.dropna()
+    
+    # 2. Safety check: If the whole window is NaNs, skip this tick
+    if valid_features_df.empty:
+        continue
+        
+    # 3. Scale and predict on the valid sequence
+    scaled_features = scaler.transform(valid_features_df)
+    
+    # Optional print to verify it's working (you can remove this later)
+    # print('features are', scaled_features)
+    
+    current_regime = int(hmm_model.predict(scaled_features)[-1])
+    print('reagemi is ' , current_regime)
     
     # Print the full date and time for the tick
-    print(f"[{current_time}] KO Open: {current_tick:.2f}")
+
     
     # Extract historical values for the MCMC algorithm
     history_vector = historical_price.values 
@@ -59,44 +82,45 @@ for current_time, historical_price, current_tick in streamer_feed:
     z_score = (current_tick - mu) / sigma
 
     # Generate trading signals
-    sell_decision = sell_singnal(portfolio, current_tick, prams_distrbatuion, current_time, z_score)
-    buy_decision = buy_signal(portfolio, current_tick, metrics, prams_distrbatuion, current_time, stop_loss_short, stop_loss_long) 
+    sell_decision = sell_singnal(portfolio, current_tick, prams_distrbatuion, current_date, z_score)
+    buy_decision = buy_signal(portfolio, current_tick, metrics, prams_distrbatuion, current_date, stop_loss_short, stop_loss_long) 
 
     # Directory management for MCMC backups
     if not os.path.exists('mcmc_samples_backups'):
         os.makedirs('mcmc_samples_backups')
     
     # Add hours and minutes so the files don't overwrite each other intraday
-    time_str = current_time.strftime('%Y%m%d_%H%M')
+    time_str = current_date.strftime('%Y%m%d_%H%M')
     mcmc_filename = f"mcmc_samples_backups/mcmc_{time_str}.npy"
     np.save(mcmc_filename, prams_distrbatuion)
 
     # Create the flat row for the CSV
     daily_row = {
-        'datetime': current_time,
-        'current_price': current_tick,
-        # OU Parameters
-        'theta': theta,
-        'mu': mu,
-        'sigma': sigma,
-        # Z-Score and Risk
-        'z_score': z_score,
-        'stop_loss_short': stop_loss_short,
-        'stop_loss_long': stop_loss_long,
-        # Metrics from summary_statistics()
-        'median_z': metrics.get('median_z'),
-        'std_zscore': metrics.get('std_zscore'),
-        'lower_ci': metrics.get('lower_ci'),
-        'upper_ci': metrics.get('upper_ci'),
-        'skew_z': metrics.get('skew_z'),
-        'kurt_z': metrics.get('kurt_z'),
-        # Actions
-        'action_bought': buy_decision.get("trade", False),
-        'action_sold': sell_decision.get("trade", False),
-        # Financials
-        'cash_balance': portfolio.cash,
-        'raw_data_path': mcmc_filename 
-    }
+         'date': current_date,
+         'current_price': current_tick,
+         'market_regime': current_regime,
+         # OU Parameters
+         'theta': theta,
+         'mu': mu,
+         'sigma': sigma,
+         # Z-Score and Risk
+         'z_score': z_score,
+         'stop_loss_short': stop_loss_short,
+         'stop_loss_long': stop_loss_long,
+         # Metrics from summary_statistics()
+         'median_z': metrics.get('median_z'),
+         'std_zscore': metrics.get('std_zscore'),
+         'lower_ci': metrics.get('lower_ci'),
+         'upper_ci': metrics.get('upper_ci'),
+         'skew_z': metrics.get('skew_z'),
+         'kurt_z': metrics.get('kurt_z'),
+         # Actions
+         'action_bought': buy_decision.get("trade", False) if isinstance(buy_decision, dict) else False,
+         'action_sold': sell_decision.get("trade", False) if isinstance(sell_decision, dict) else False,
+         # Financials
+         'cash_balance': portfolio.cash,
+         'raw_data_path': mcmc_filename 
+     }
         
     master_daily_log.append(daily_row)
 
