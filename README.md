@@ -41,7 +41,7 @@ To protect capital from catastrophic drawdowns during aggressive structural tren
   * Take-profit signals are triggered dynamically when prices enter the 50% Highest Density Interval (HDI) of the expected mean.
   * Dual-layered stop-losses include a 50-tick time-stop and a structural blowout stop ($Z \ge 3.75$).
 ## Academic Paper
-For an in-depth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the complete research paper included in the repository: mean_revert_paper.ipynb.
+*For an in-depth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the complete research paper included in the repository: mean_revert_paper.ipynb.
 ---
 
 ## Project Structure
