@@ -51,7 +51,6 @@ To protect capital from catastrophic drawdowns during aggressive structural tren
 ├── requirements.txt             # Python dependencies
 ├── singnal_engine.py            # Signal generation and trade filtering engine
 └── z_distro.py                  # Z-score and distribution calculations
-'''
-## Academic Paper
-For an indepth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the complete research paper included in the repository: research_paper/mean_revert_paper.ipynb  Colab.pdf
 └── README.md
+Documentation
+For an in-depth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the complete research paper included in the repository: mean_revert_paper.ipynb - Colab.pdf[cite: 1].
