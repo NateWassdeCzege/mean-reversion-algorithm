@@ -40,11 +40,13 @@ To protect capital from catastrophic drawdowns during aggressive structural tren
 * **Dynamic Exits & Stop-Losses**:
   * Take-profit signals are triggered dynamically when prices enter the 50% Highest Density Interval (HDI) of the expected mean.
   * Dual-layered stop-losses include a 50-tick time-stop and a structural blowout stop ($Z \ge 3.75$).
+
 ---
-documentation_section = """
+
 ## Academic Paper
-*For an in-depth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the complete research paper included in the repository: mean_revert_paper.ipynb.*
-"""
+
+<small>For an in-depth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the complete research paper included in the repository: `mean_revert_paper.ipynb`.</small>
+
 ---
 
 ## Project Structure
@@ -63,9 +65,3 @@ documentation_section = """
 ├── requirements.txt             # Python dependencies
 ├── signal_engine.py             # Signal generation and trade filtering engine
 └── z_distro.py                  # Z-score and distribution calculations
-
-
-
-
-
-
