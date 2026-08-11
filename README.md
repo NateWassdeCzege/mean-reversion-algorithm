@@ -15,6 +15,7 @@ Over the one-year backtest period, the mean-reverting algorithm successfully cap
 ### Key Performance Metrics
 
 **Return & Efficiency**
+* **11.28% annual profit**
 * **Win Rate:** 58.2%
 * **Profit Factor:** 4.50
 * **Expectancy:** +0.97% per trade
