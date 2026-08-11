@@ -57,7 +57,7 @@ To protect capital from catastrophic drawdowns during aggressive structural tren
 * **Confidence-Scaled Allocation**: Caps maximum trade exposure at 2% of total portfolio capital, linearly scaling base position sizes using model confidence.
 * **Dynamic Exits & Stop-Losses**:
   * Take-profit signals are triggered dynamically when prices enter the 50% Highest Density Interval (HDI) of the expected mean.
-  * Dual-layered stop-losses include a 50-tick time-stop and a structural blowout stop ($Z \ge 3.75$).
+  * Dual-layered stop-losses include a 130-tick time-stop and a structural blowout stop ($Z \ge 3.75$).
 
 ---
 
