@@ -45,7 +45,7 @@ To protect capital from catastrophic drawdowns during aggressive structural tren
 
 ## Academic Paper
 
-<small>For an in-depth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the complete research paper included in the repository: `mean_revert_paper.ipynb`.</small>
+<small>For an in-depth mathematical breakdown, full system architecture schematics, and rigorous evaluation metrics, please refer to the [complete research paper](paper_report.pdf) included in the repository.</small>
 
 ---
 
