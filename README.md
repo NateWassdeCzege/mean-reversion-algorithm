@@ -49,19 +49,28 @@ To protect capital from catastrophic drawdowns during aggressive structural tren
 
 ---
 
-## Project Structure
+> **Disclaimer:** This model is for educational and informational purposes only. Using this model does not guarantee financial profit or returns. All trading and investments carry inherent risk. Please use this tool at your own discretion and risk.
 
+## Project Structure
 ```text
-├── .gitignore
-├── HMM_main.py                  # Hidden Markov Model regime classification
-├── LICENSE
-├── README.md
-├── data_feed.py                 # Market data ingestion stream
-├── helper_functions.py          # Utility and helper functions
-├── ko_hmm_final_pipeline2.pkl   # Serialized HMM pipeline model
-├── main.py                      # Main execution entry point
-├── mean_revert_paper.ipynb      # Detailed mathematical documentation (Colab PDF)
-├── position_record.py           # Position recording and management
-├── requirements.txt             # Python dependencies
-├── signal_engine.py             # Signal generation and trade filtering engine
-└── z_distro.py                  # Z-score and distribution calculations
+single_mean_rev/
+├── mcmc_samples_backups/     # Saved MCMC parameter chain sampling backups
+├── models/                   # Serialized HMM pipelines and model artifacts (.pkl)
+├── src/                      # Core trading pipeline modules
+│   ├── data_feed_live.py     # Real-time data streaming interface
+│   ├── data_feed.py          # Historical data ingestion stream (yfinance)
+│   ├── hmm_main.py           # Hidden Markov Model regime classification logic
+│   ├── position_record.py    # Portfolio position tracking and trade management
+│   ├── signal_engine.py      # Mean-reversion signal generation and regime filtering
+│   └── z_distro.py           # Z-score calculations and probability distributions
+├── test_analysis/            # Strategy research and parameter optimization
+│   ├── analysis.ipynb        # Exploratory backtest analysis notebook
+│   └── tune.py               # Hyperparameter tuning script
+├── trading_logs/             # Live and backtest execution logs
+├── .gitignore                # Git exclusion configuration
+├── back_test.py              # Strategy backtesting runner
+├── paper.ipynb               # MCMC parameter estimation notebook
+├── paper_report.pdf          # Formatted quantitative research report
+├── README.md                 # Project overview and instructions
+├── requirements.txt          # Python dependencies
+└── run_live_ibkr.py          # Interactive Brokers live trading execution driver
